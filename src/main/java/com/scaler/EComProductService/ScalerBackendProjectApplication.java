@@ -9,5 +9,4 @@ public class ScalerBackendProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ScalerBackendProjectApplication.class, args);
 	}
-
 }
