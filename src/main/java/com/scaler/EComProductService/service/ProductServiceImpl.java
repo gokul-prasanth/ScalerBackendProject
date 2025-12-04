@@ -1,6 +1,7 @@
 package com.scaler.EComProductService.service;
 
 import com.scaler.EComProductService.dto.ProductListResponseDTO;
+import com.scaler.EComProductService.dto.ProductRequestDTO;
 import com.scaler.EComProductService.dto.ProductResponseDTO;
 import com.scaler.EComProductService.model.Product;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,11 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-    @Override
-    public Product createProduct(String product) {
+    public ProductResponseDTO createProduct(ProductRequestDTO productRequest) {
         return null;
     }
-
     @Override
-    public Product deleteProduct(int id) {
+    public Boolean deleteProduct(int id) {
         return null;
     }
 

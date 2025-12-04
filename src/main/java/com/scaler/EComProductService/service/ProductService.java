@@ -1,15 +1,20 @@
 package com.scaler.EComProductService.service;
 
 import com.scaler.EComProductService.dto.ProductListResponseDTO;
+import com.scaler.EComProductService.dto.ProductRequestDTO;
 import com.scaler.EComProductService.dto.ProductResponseDTO;
+import com.scaler.EComProductService.exception.ProductNotFoundException;
 import com.scaler.EComProductService.model.Product;
 
 public interface ProductService {
 
     ProductListResponseDTO getAllProducts();
-    ProductResponseDTO getProductById(int id);
-    Product createProduct(String product);
 
-    Product deleteProduct(int id);
+    ProductResponseDTO getProductById(int id) throws ProductNotFoundException;
+
+    ProductResponseDTO createProduct(ProductRequestDTO productRequest);
+
+    Boolean deleteProduct(int id) throws ProductNotFoundException;
+
     Product updateProduct(int id);
 }

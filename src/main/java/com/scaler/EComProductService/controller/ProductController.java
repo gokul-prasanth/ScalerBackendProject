@@ -1,6 +1,9 @@
 package com.scaler.EComProductService.controller;
 
+import com.scaler.EComProductService.dto.ProductListResponseDTO;
+import com.scaler.EComProductService.dto.ProductRequestDTO;
 import com.scaler.EComProductService.dto.ProductResponseDTO;
+import com.scaler.EComProductService.exception.ProductNotFoundException;
 import com.scaler.EComProductService.service.ProductService;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,19 +22,59 @@ import java.util.List;
 
 public class ProductController {
 
-    @Autowired
-    @Qualifier("FakeStoreProductService")
-    ProductService productService;
-
-    @GetMapping("/products/1")
-
-    public ResponseEntity getProductById()
+    // Since we are injecting dependency via constructor and it will be immutable. We set it to final for extra precautions
+    private final ProductService productService;
+    @Autowired // Autowired is not required in Spring 4.x version onwards
+    public ProductController( @Qualifier("FakeStoreProductService") ProductService productService)
     {
-        ProductResponseDTO response = productService.getProductById(1);
-        return ResponseEntity.ok(response);
+        this.productService = productService;
+    }
 
+    @GetMapping("/products")
+    public ResponseEntity getAllProducts()
+    {
+        ProductListResponseDTO response = productService.getAllProducts();
+        return ResponseEntity.ok(response);
+    }
+
+    // If we want to get product by ID, then we simply put id inside {}, then use PathVariable annotation. That will inject the id into the parameter for the method
+    @GetMapping("/products/{id}")
+    public ResponseEntity getProductById(@PathVariable("id") int id) throws ProductNotFoundException
+    {
+        ProductResponseDTO response = productService.getProductById(id);
+        return ResponseEntity.ok(response);
+        /*
+
+        // We are creating a dummy API here at the Controller level
 
         /* ProductResponseDTO p1 = new ProductResponseDTO();
+        ProductResponseDTO p1 = new ProductResponseDTO();
+        p1.setId(1);
+        p1.setTitle("IPhone 15 Pro");
+        p1.setPrice(150000);
+@@ -51,6 +70,42 @@ public ResponseEntity getProductById()
+
+        List<ProductResponseDTO> products = Arrays.asList(p1, p2);
+        return ResponseEntity.ok(products);*/
+    }
+
+    @PostMapping("/products")
+    public ResponseEntity createProduct(@RequestBody ProductRequestDTO productRequestDTO)
+    {
+        ProductResponseDTO responseDTO = productService.createProduct(productRequestDTO);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity deleteProduct(@PathVariable("id") int id) throws ProductNotFoundException
+    {
+        Boolean response = productService.deleteProduct(id);
+        return ResponseEntity.ok(response);
+        /*
+
+        // We are creating a dummy API here at the Controller level
+
+        ProductResponseDTO p1 = new ProductResponseDTO();
         p1.setId(1);
         p1.setTitle("IPhone 15 Pro");
         p1.setPrice(150000);
@@ -50,6 +92,5 @@ public class ProductController {
 
         List<ProductResponseDTO> products = Arrays.asList(p1, p2);
         return ResponseEntity.ok(products);*/
-
     }
 }
