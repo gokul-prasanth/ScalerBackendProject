@@ -1,6 +1,7 @@
 package com.scaler.EComProductService.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Data
 @Entity
 public class Category extends BaseModel{
     private String categoryName;
