@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Getter
@@ -25,8 +26,7 @@ public class ProductController {
     // Since we are injecting dependency via constructor and it will be immutable. We set it to final for extra precautions
     private final ProductService productService;
     @Autowired // Autowired is not required in Spring 4.x version onwards
-    public ProductController( @Qualifier("FakeStoreProductService") ProductService productService)
-    {
+    public ProductController( @Qualifier("NormalProductService") ProductService productService)    {
         this.productService = productService;
     }
 
@@ -39,8 +39,7 @@ public class ProductController {
 
     // If we want to get product by ID, then we simply put id inside {}, then use PathVariable annotation. That will inject the id into the parameter for the method
     @GetMapping("/products/{id}")
-    public ResponseEntity getProductById(@PathVariable("id") int id) throws ProductNotFoundException
-    {
+    public ResponseEntity getProductById(@PathVariable("id") UUID id) throws ProductNotFoundException    {
         ProductResponseDTO response = productService.getProductById(id);
         return ResponseEntity.ok(response);
         /*
@@ -56,6 +55,13 @@ public class ProductController {
 
         List<ProductResponseDTO> products = Arrays.asList(p1, p2);
         return ResponseEntity.ok(products);*/
+    }
+
+    @GetMapping("/products/title/{title}")
+    public ResponseEntity getProductByTitle(@PathVariable("title") String title) throws ProductNotFoundException
+    {
+        ProductResponseDTO response = productService.getProductByTitle(title);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/products")

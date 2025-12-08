@@ -1,6 +1,9 @@
 package com.scaler.EComProductService.service.impl;
 
 
+import com.scaler.EComProductService.demo.Author;
+import com.scaler.EComProductService.demo.AuthorRepo;
+import com.scaler.EComProductService.demo.Book;
 import com.scaler.EComProductService.model.Category;
 import com.scaler.EComProductService.model.Orders;
 import com.scaler.EComProductService.model.Price;
@@ -22,11 +25,14 @@ public class InitServiceImpl implements InitService {
     ProductRepository productRepository;
     CategoryRepository categoryRepository;
 
-    public InitServiceImpl(OrdersRepository ordersRepository, PriceRepository priceRepository, ProductRepository productRepository, CategoryRepository categoryRepository) {
-        this.ordersRepository = ordersRepository;
+    AuthorRepo authorRepo;
+
+    public InitServiceImpl(OrdersRepository ordersRepository, PriceRepository priceRepository,
+                           ProductRepository productRepository, CategoryRepository categoryRepository, AuthorRepo authorRepo) {        this.ordersRepository = ordersRepository;
         this.priceRepository = priceRepository;
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.authorRepo = authorRepo;
     }
 
     @Override
@@ -85,5 +91,13 @@ public class InitServiceImpl implements InitService {
         order.setProducts(List.of(watch,phone,laptop));
         ordersRepository.save(order);
 
+        Author author = new Author("Agatha Christie",null);
+
+        Book book1 = new Book("And Then There Were None", author);
+        Book book2 = new Book("Murder On Orient Express", author);
+        Book book3 = new Book("Murder of Roger Ackroyd", author);
+
+        author.setBooks(List.of(book1, book2, book3));
+        authorRepo.save(author);
     }
 }

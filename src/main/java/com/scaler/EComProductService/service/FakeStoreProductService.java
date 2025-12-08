@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.scaler.EComProductService.mapper.ProductMapper.fakeStoreProductResponseToProductResponse;
 import static com.scaler.EComProductService.mapper.ProductMapper.productRequestToFakeStoreProductRequest;
@@ -57,7 +58,7 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public ProductResponseDTO getProductById(int id) throws ProductNotFoundException {
+    public ProductResponseDTO getProductById(UUID id) throws ProductNotFoundException {
 
         FakeStoreProductResponseDTO fakeStoreProductResponseDTO = fakeStoreAPIClient.getProductById(id);
         if(isNull(fakeStoreProductResponseDTO)){
@@ -81,6 +82,16 @@ public class FakeStoreProductService implements ProductService {
     }
     @Override
     public Product updateProduct(int id) {
+        return null;
+    }
+
+    @Override
+    public ProductResponseDTO getProductByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public ProductResponseDTO getProductByTitleAndDescription(String title, String description) {
         return null;
     }
 }
